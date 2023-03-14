@@ -1,81 +1,160 @@
-import "package:flutter/foundation.dart";
-import "package:sqflite/sqflite.dart" as sql;
+import 'dart:async';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
-class SqlHelper {
-  static Future<void> createTable(sql.Database database) async {
-    await database.execute("""CREATE TABLE restaurant(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      name TEXT,
-      description TEXT,
-      city TEXT,
-      country TEXT,
-      zip_code TEXT,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) """);
-  }
+import '../model/Restaurant.dart';
 
-  static Future<sql.Database> db() async {
-    return sql.openDatabase(
-      'dbRestaurant.db',
-      version: 1,
-      onCreate: (sql.Database database, int version) async {
-        await createTable(database);
-      },
-    );
-  }
+class SQLHelper {
+  // static final SQLHelper _instance = SQLHelper.internal();
+  // factory SQLHelper() => _instance;
+  // SQLHelper.internal();
+  // Database _database;
 
-  static Future<int> createRestaurant(String name, String? description,
-      String? city, String? country, String? zip_code) async {
-    final db = await SqlHelper.db();
+  // Future<Database> get database async {
+  //   if (_database != null) {
+  //     return _database;
+  //   }
 
-    final data = {
-      "name": name,
-      "description": description,
-      "city": city,
-      "country": country,
-      "zip_code": zip_code
-    };
+  //   _database = await _initDatabase();
+  //   return _database;
+  // }
 
-    final id = await db.insert('restaurant', data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
+  // Future<Database> _initDatabase() async {
+  //   final String path = await getDatabasesPath();
+  //   final String dbPath = join(path, 'ontimediningv2.db');
 
-    return id;
-  }
+  //   return await openDatabase(
+  //     dbPath,
+  //     version: 1,
+  //     onCreate: (db, version) async {
+  //       await createDatabaseSchema(db, version);
+  //     },
+  //   );
+  // }
 
-  static Future<List<Map<String, dynamic>>> getRestaurants() async {
-    final db = await SqlHelper.db();
-    return db.query("restaurant", orderBy: "id");
-  }
+  // Future<void> createDatabaseSchema(Database db, int version) async {
+  //   await db.execute('''
+  //     CREATE TABLE category (
+  //       id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+  //       title TEXT,
+  //       description TEXT,
+  //       image TEXT
+  //     )
+  //   ''');
 
-  static Future<List<Map<String, dynamic>>> getRestaurant(int id) async {
-    final db = await SqlHelper.db();
-    return db.query("restaurant", where: "id = ?", whereArgs: [id], limit: 1);
-  }
+  //   await db.execute('''
+  //     CREATE TABLE restaurant (
+  //       id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+  //       name TEXT NOT NULL,
+  //       city TEXT,
+  //       country TEXT,
+  //       zip_code TEXT,
+  //       phone TEXT,
+  //       image TEXT,
+  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  //     )
+  //   ''');
 
-  static Future<int> updateItem(int id, String name, String? description,
-      String? city, String? country, String? zip_code) async {
-    final db = await SqlHelper.db();
+  //   await db.execute('''
+  //     CREATE TABLE dash (
+  //       id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+  //       title TEXT,
+  //       description TEXT,
+  //       price REAL,
+  //       image TEXT,
+  //       category_id INTEGER,
+  //       CONSTRAINT fk_category
+  //         FOREIGN KEY (category_id)
+  //         REFERENCES category(id)
+  //     )
+  //   ''');
 
-    final data = {
-      'name': name,
-      'description': description,
-      'city': city,
-      'country': country,
-      'createdAt': DateTime.now().toString()
-    };
+  //   await db.execute('''
+  //     CREATE TABLE dashItem (
+  //       id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE NOT NULL,
+  //       name TEXT,
+  //       image TEXT
+  //     )
+  //   ''');
 
-    final result =
-        await db.update("restaurant", data, where: "id = ?", whereArgs: [id]);
-    return result;
-  }
+  //   await db.execute('''
+  //     CREATE TABLE dash_dashItem (
+  //       dash_id INTEGER,
+  //       dashItem_id INTEGER,
+  //       CONSTRAINT fk_dash_dashItem_dash
+  //         FOREIGN KEY (dash_id)
+  //         REFERENCES dash(id),
+  //       CONSTRAINT fk_dash_dashItem_dashItem
+  //         FOREIGN KEY (dashItem_id)
+  //         REFERENCES dashItem(id),
+  //       PRIMARY KEY (dash_id, dashItem_id)
+  //     )
+  //   ''');
 
-  static Future<void> deleteItem(int id) async {
-    final db = await SqlHelper.db();
+  //   await db.execute('''
+  //     CREATE TABLE command (
+  //       id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+  //       ttc REAL,
+  //       status TEXT,
+  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  //     )
+  //   ''');
 
-    try {
-      await db.delete("restaurant", where: "id = ?", whereArgs: [id]);
-    } catch (err) {
-      debugPrint("Something went wrong: $err");
-    }
-  }
+  //   await db.execute('''
+  //     CREATE TABLE command_item (
+  //       id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+  //       ttc REAL,
+  //       status TEXT,
+  //       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  //       command_id INTEGER,
+  //       CONSTRAINT fk_command
+  //         FOREIGN KEY (command_id)
+  //         REFERENCES command(id)
+  //     )
+  //   ''');
+
+  //   Restaurant youfood = Restaurant(
+  //       id: 1,
+  //       name: "YouFood",
+  //       city: "Youssoufia",
+  //       country: "Morocco",
+  //       zipCode: "46300",
+  //       image: "img.jpg",
+  //       phone: "0607189671",
+  //       createdAt: DateTime.now());
+  //   Restaurant youcrud = Restaurant(
+  //       id: 2,
+  //       name: "YouCrud",
+  //       city: "Safi",
+  //       country: "Morocco",
+  //       zipCode: "46400",
+  //       image: "img1.jpg",
+  //       phone: "0607189671",
+  //       createdAt: DateTime.now());
+  //   Restaurant youfrensh = Restaurant(
+  //       id: 3,
+  //       name: "YouFrensh",
+  //       city: "Youssoufia",
+  //       country: "Morocco",
+  //       zipCode: "46300",
+  //       image: "img2.jpg",
+  //       phone: "0607189671",
+  //       createdAt: DateTime.now());
+
+  //   insertRestaurant(youfood);
+  //   insertRestaurant(youcrud);
+  //   insertRestaurant(youfrensh);
+  // }
+
+  // Future<int> insertRestaurant(Restaurant restaurant) async {
+  //   final db = await _database;
+  //   return await db.insert('restaurant', restaurant.toMap(),
+  //       conflictAlgorithm: ConflictAlgorithm.replace);
+  // }
+
+  // Future<List<Restaurant>> getRestautants() async {
+  //   final db = await _database;
+  //   final results = await db.query("restaurant");
+  //   return results.map((value) => Restaurant.fromMap(value)).toList();
+  // }
 }

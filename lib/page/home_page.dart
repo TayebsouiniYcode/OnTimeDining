@@ -1,106 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:on_time_dining/page/panier.dart';
-import 'package:on_time_dining/page/profil.dart';
+import 'package:on_time_dining/helpers/sql_helper.dart';
+import 'package:on_time_dining/model/Restaurant.dart';
+import 'package:on_time_dining/widget/restaurant_card.dart';
 
-import '../helpers/sql_helper.dart';
+import '../widget/bottom_navigation.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  //TODO delete this restaurant
+  Restaurant restaurant = Restaurant(
+      id: 23,
+      name: 'YouFood',
+      city: "Youssoufia",
+      country: "Morocco",
+      zipCode: "46300",
+      image: "1.jpg",
+      phone: "0607189671",
+      createdAt: DateTime.now());
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
+  SQLHelper helper = SQLHelper();
+  List<Restaurant> restaurants = [];
 
-class _HomePageState extends State<HomePage> {
-  List<Map<String, dynamic>> _restaurants = [];
-
-  bool _isLoading = true;
-
-  void _refreshRestaurants() async {
-    final data = await SqlHelper.getRestaurants();
-    setState(() {
-      _restaurants = data;
-      _isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshRestaurants();
+  HomePage({super.key}) {
+    _getAllRestaurant();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          child: Icon(Icons.arrow_back),
-          onTap: () => print("back tapped"),
-        ),
-        title: Center(
-          child: Text("Restaurants List"),
-        ),
-        actions: [
-          GestureDetector(
-            child: Icon(Icons.shopping_cart),
-          )
+        leading: const Icon(Icons.arrow_back_outlined),
+        title: const Text("Restaurants"),
+        actions: const [
+          Icon(Icons.search),
         ],
+        centerTitle: true,
       ),
-      body: Container(
-        child: Center(
-          child: Text("Home page"),
-        ),
-      ),
-      // child: ListView.builder(
-      //     itemCount: _restaurants.length,
-      //     itemBuilder: (BuildContext context, int index) {
-      //       return Container(
-      //         child: Center(
-      //             child: Text(
-      //                 '${_restaurants[index]['id']} ${_restaurants[index]['name']} ${_restaurants[index]['description']}')),
-      //       );
-      //     })),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Panier',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-        onTap: (index) {
-          String screen = 'Home';
-
-          switch (index) {
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Panier()),
-              );
-              break;
-            case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Profil()),
-              );
-              break;
-          }
-        },
-      ),
+      body: Column(children: [
+        RestaurantCard(restaurant: restaurant),
+        RestaurantCard(restaurant: restaurant),
+        RestaurantCard(restaurant: restaurant)
+      ]),
+      bottomNavigationBar: ButtomNavigationMenu(),
     );
   }
+
+  void _getAllRestaurant() {
+    //TODO
+    // helper.getRestautants().then((list) => restaurants = list);
+  }
 }
+
+
+
+// FutureBuilder(
+//       future: sqlHelper.getRestautants(),
+//       builder: (BuildContext context, AsyncSnapshot snapshot) {
+//         print(snapshot.data);
+//         return ListView.builder(
+//           itemCount: snapshot.data.length,
+//           itemBuilder: (context, index) {
+//             final restaurant = snapshot.data[index];
+//             return Card(
+//               child: Column(
+//                 children: <Widget>[
+//                   Expanded(
+//                     child: Container(
+//                       decoration: const BoxDecoration(
+//                         image: DecorationImage(
+//                           image: NetworkImage(
+//                               "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   ListTile(
+//                     title: Text(
+//                       restaurant.name,
+//                       textAlign: TextAlign.center,
+//                       style: const TextStyle(
+//                         fontWeight: FontWeight.bold,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             );
+//           },
+//         );
+//       },
+//     );
