@@ -16,8 +16,8 @@ void main() async {
   // categoryService.insertCategory();
   // dashService.insertDash();
 
-  dashService.getAllDash();
-  dashService.getDashByRestaurant(1);
+  // dashService.getAllDash();
+  // dashService.getDashByRestaurant(1);
   runApp(const MyApp());
 }
 
