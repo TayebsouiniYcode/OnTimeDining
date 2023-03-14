@@ -1,3 +1,4 @@
+import 'package:on_time_dining/dao/category_dao.dart';
 import 'package:on_time_dining/dao/dash_dao.dart';
 import 'package:on_time_dining/model/Dash.dart';
 
@@ -60,5 +61,21 @@ class DashService {
     dashDao.insertRestaurant(dash4.toMap());
     dashDao.insertRestaurant(dash5.toMap());
     dashDao.insertRestaurant(dash6.toMap());
+  }
+
+  Future<List<Map<String, dynamic>>> getAllDash() async {
+    List<Map<String, dynamic>> list = await dashDao.getAllDash();
+    print("....................... dash list");
+    print(list);
+    return list;
+  }
+
+  Future<List<Map<String, dynamic>>> getDashByRestaurant(
+      int restaurantId) async {
+    List<Map<String, dynamic>> list =
+        await dashDao.getDashByRestaurantId(restaurantId);
+    print("............................ dash by restaurant");
+    print(list);
+    return list;
   }
 }
