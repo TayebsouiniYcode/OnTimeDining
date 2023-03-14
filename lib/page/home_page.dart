@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:on_time_dining/helpers/sql_helper.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:on_time_dining/model/Restaurant.dart';
 import 'package:on_time_dining/page/restaurant_plats.dart';
 import 'package:on_time_dining/service/restaurant_service.dart';
-import 'package:on_time_dining/widget/restaurant_card.dart';
 
 import '../widget/bottom_navigation.dart';
 
@@ -19,8 +18,35 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Restaurant List'),
+        backgroundColor: Color.fromARGB(0, 127, 43, 43),
+        elevation: 0,
+        leading: GestureDetector(
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.black,
+          ),
+          onTap: () {
+            //TODO previous page
+          },
+        ),
+        title: const Text(
+          'HOME',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: Colors.black,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          )
+        ],
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: restaurantService.getAllRestaurants(),
@@ -34,34 +60,35 @@ class _HomePageState extends State<HomePage> {
               itemCount: restaurants.length,
               itemBuilder: (BuildContext context, int index) {
                 //TODO this is a card of restaurant to refactoring
-                return GestureDetector(
-                  child: Column(children: [
-                    Container(
-                      padding: EdgeInsets.all(10.00),
-                      margin: EdgeInsets.all(5.00),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "name: ${restaurants[index].name}",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(" phone: ${restaurants[index].phone}",
-                              style: TextStyle(color: Colors.white)),
-                          Text(" city: ${restaurants[index].city}",
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    )
-                  ]),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RestaurantPlats(
-                              restaurant: restaurants[index],
-                            )));
-                  },
+                return Container(
+                  height: 180,
+                  // padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  margin: EdgeInsets.all(10.00),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: AssetImage("images/${restaurants[index].image}"),
+                    fit: BoxFit.cover,
+                  )),
+                  child: Card(
+                      color: Colors.transparent,
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => RestaurantPlats(
+                                      restaurant: restaurants[index],
+                                    )));
+                          },
+                          child: Center(
+                            child: Text("${restaurants[index].name}",
+                                style: GoogleFonts.lobster(
+                                  color: Colors.white,
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyLarge,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.italic,
+                                )),
+                          ))),
                 );
               },
             );
@@ -72,6 +99,7 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
+      bottomNavigationBar: ButtomNavigationMenu(),
     );
   }
 }

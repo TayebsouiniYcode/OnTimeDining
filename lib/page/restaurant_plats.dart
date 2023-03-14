@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/helpers/panier.dart';
 import 'package:on_time_dining/model/Dash.dart';
 import 'package:on_time_dining/page/dash_details.dart';
 import 'package:on_time_dining/service/dash_service.dart';
 import 'package:on_time_dining/widget/bottom_navigation.dart';
-import 'package:on_time_dining/widget/category.dart';
-import 'package:on_time_dining/widget/dash_card.dart';
-import 'package:on_time_dining/widget/dash_list.dart';
-import 'package:on_time_dining/widget/popular_dash.dart';
 
 import '../model/Restaurant.dart';
+import 'check.dart';
 
 class RestaurantPlats extends StatefulWidget {
   final Restaurant restaurant;
@@ -25,61 +23,124 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.restaurant.name}'),
+        backgroundColor: Color.fromARGB(0, 127, 43, 43),
+        elevation: 0,
+        leading: GestureDetector(
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.black,
+          ),
+          onTap: () {
+            //TODO previous page
+          },
+        ),
+        title: const Text(
+          'HOME',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: Colors.black,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          )
+        ],
+        centerTitle: true,
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: dashService.getDashByRestaurant(widget.restaurant.id),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
-          if (snapshot.hasData) {
-            List<Map<String, dynamic>> dashMaps = snapshot.data!;
-            List<Dash> dashList =
-                dashMaps.map((map) => Dash.fromMap(map)).toList();
-            return ListView.builder(
-                itemCount: dashList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  //TODO this is a card of Dash to refactoring
-                  return Container(
-                    padding: EdgeInsets.all(20.00),
-                    margin: EdgeInsets.all(10.00),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                    ),
-                    child: Column(
+      body: Container(
+        padding: EdgeInsets.only(right: 10.00),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: dashService.getDashByRestaurant(widget.restaurant.id),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasData) {
+              List<Map<String, dynamic>> dashMaps = snapshot.data!;
+              List<Dash> dashList =
+                  dashMaps.map((map) => Dash.fromMap(map)).toList();
+              return ListView.builder(
+                  itemCount: dashList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //TODO this is a card of Dash to refactoring
+                    return Row(
                       children: [
                         Container(
-                          decoration: BoxDecoration(color: Colors.indigoAccent),
-                          padding: EdgeInsets.all(20.00),
-                          child: GestureDetector(
-                            child: Row(
+                            width: MediaQuery.of(context).size.width * 0.40,
+                            child: Image(
+                              image:
+                                  AssetImage('images/${dashList[index].image}'),
+                            )),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.50,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Dash title: ${dashList[index].title}"),
-                                Text(
-                                    "dash price: \$ ${dashList[index].price.toString()}")
-                              ],
-                            ),
-                            onTap: () {
-                              print("tap dash id : ${dashList[index].id}");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => DashDetails(
-                                        dash: dashList[index],
-                                      )));
-                            },
-                          ),
+                                Container(
+                                    child: Text(
+                                  "${dashList[index].title}",
+                                  style: TextStyle(
+                                      fontSize: 20.00,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                Container(
+                                    child:
+                                        Text("${dashList[index].description}")),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "\$ ${dashList[index].price}",
+                                      style: const TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    ElevatedButton(
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                        style: ButtonStyle(
+                                            foregroundColor:
+                                                MaterialStateProperty.all<Color>(
+                                                    Colors.white),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.green),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.zero,
+                                                    side: BorderSide(
+                                                        color: Colors.green)))),
+                                        onPressed: () {
+                                          Panier.panier.add(dashList[index]);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const CheckPage()),
+                                          );
+                                        })
+                                  ],
+                                )
+                              ]),
                         )
                       ],
-                    ),
-                  );
-                  // return co(
-                  //   child: Text("Dash title : ${dashList[index].title}"),
-                  // );
-                });
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+                    );
+                  });
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
       bottomNavigationBar: ButtomNavigationMenu(),
     );

@@ -17,11 +17,11 @@ class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
       style: optionStyle,
     ),
     Text(
-      'Index 1: Business',
+      'Index 1: Panier',
       style: optionStyle,
     ),
     Text(
-      'Index 2: School',
+      'Index 2: Profil',
       style: optionStyle,
     ),
   ];
@@ -45,8 +45,8 @@ class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
           label: 'Business',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.contact_emergency),
-          label: 'School',
+          icon: Icon(Icons.local_grocery_store_outlined),
+          label: 'Panier',
         ),
       ],
       currentIndex: _selectedIndex,

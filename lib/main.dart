@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/sql_helper.dart';
-import 'package:on_time_dining/model/Restaurant.dart';
 import 'package:on_time_dining/page/home_page.dart';
 import 'package:on_time_dining/service/category_service.dart';
 import 'package:on_time_dining/service/dash_service.dart';
