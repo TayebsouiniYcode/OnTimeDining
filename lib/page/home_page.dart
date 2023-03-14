@@ -1,92 +1,153 @@
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/sql_helper.dart';
 import 'package:on_time_dining/model/Restaurant.dart';
+import 'package:on_time_dining/page/restaurant_plats.dart';
+import 'package:on_time_dining/service/restaurant_service.dart';
 import 'package:on_time_dining/widget/restaurant_card.dart';
 
 import '../widget/bottom_navigation.dart';
 
-class HomePage extends StatelessWidget {
-  //TODO delete this restaurant
-  Restaurant restaurant = Restaurant(
-      id: 23,
-      name: 'YouFood',
-      city: "Youssoufia",
-      country: "Morocco",
-      zipCode: "46300",
-      image: "1.jpg",
-      phone: "0607189671",
-      createdAt: DateTime.now());
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-  SQLHelper helper = SQLHelper();
-  List<Restaurant> restaurants = [];
+class _HomePageState extends State<HomePage> {
+  RestaurantService restaurantService = RestaurantService();
 
-  HomePage({super.key}) {
-    _getAllRestaurant();
-  }
-
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back_outlined),
-        title: const Text("Restaurants"),
-        actions: const [
-          Icon(Icons.search),
-        ],
-        centerTitle: true,
+        title: Text('Restaurant List'),
       ),
-      body: Column(children: [
-        RestaurantCard(restaurant: restaurant),
-        RestaurantCard(restaurant: restaurant),
-        RestaurantCard(restaurant: restaurant)
-      ]),
-      bottomNavigationBar: ButtomNavigationMenu(),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: restaurantService.getAllRestaurants(),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.hasData) {
+            List<Map<String, dynamic>> restaurantMaps = snapshot.data!;
+            List<Restaurant> restaurants =
+                restaurantMaps.map((map) => Restaurant.fromMap(map)).toList();
+            return ListView.builder(
+              itemCount: restaurants.length,
+              itemBuilder: (BuildContext context, int index) {
+                //TODO this is a card of restaurant to refactoring
+                return GestureDetector(
+                  child: Column(children: [
+                    Container(
+                      padding: EdgeInsets.all(10.00),
+                      margin: EdgeInsets.all(5.00),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "name: ${restaurants[index].name}",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text(" phone: ${restaurants[index].phone}",
+                              style: TextStyle(color: Colors.white)),
+                          Text(" city: ${restaurants[index].city}",
+                              style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    )
+                  ]),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RestaurantPlats(
+                              restaurant: restaurants[index],
+                            )));
+                  },
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
-  }
-
-  void _getAllRestaurant() {
-    //TODO
-    // helper.getRestautants().then((list) => restaurants = list);
   }
 }
 
+// class HomePage extends StatelessWidget {
+//   RestaurantService restaurantService = RestaurantService();
+//   List<Map> restaurantList = [];
 
+//   // @override
+//   // void initState() {
+//   //   print("init state");
+//   // }
 
-// FutureBuilder(
-//       future: sqlHelper.getRestautants(),
-//       builder: (BuildContext context, AsyncSnapshot snapshot) {
-//         print(snapshot.data);
-//         return ListView.builder(
-//           itemCount: snapshot.data.length,
-//           itemBuilder: (context, index) {
-//             final restaurant = snapshot.data[index];
-//             return Card(
-//               child: Column(
-//                 children: <Widget>[
-//                   Expanded(
-//                     child: Container(
-//                       decoration: const BoxDecoration(
-//                         image: DecorationImage(
-//                           image: NetworkImage(
-//                               "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
-//                           fit: BoxFit.cover,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   ListTile(
-//                     title: Text(
-//                       restaurant.name,
-//                       textAlign: TextAlign.center,
-//                       style: const TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           },
-//         );
-//       },
+//   HomePage({super.key}) {
+//     restaurantService
+//         .getAllRestaurants()
+//         .then((value) => restaurantList = value);
+//     print(restaurantList.toString());
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         leading: const Icon(Icons.arrow_back_outlined),
+//         title: const Text("Restaurants"),
+//         actions: const [
+//           Icon(Icons.search),
+//         ],
+//         centerTitle: true,
+//       ),
+//       body: Column(children: []),
+//       bottomNavigationBar: ButtomNavigationMenu(),
 //     );
+//   }
+
+//   void _getAllRestaurants() async {
+//     restaurantList = await restaurantService.getAllRestaurants();
+//   }
+// }
+
+// // FutureBuilder(
+// //       future: sqlHelper.getRestautants(),
+// //       builder: (BuildContext context, AsyncSnapshot snapshot) {
+// //         print(snapshot.data);
+// //         return ListView.builder(
+// //           itemCount: snapshot.data.length,
+// //           itemBuilder: (context, index) {
+// //             final restaurant = snapshot.data[index];
+// //             return Card(
+// //               child: Column(
+// //                 children: <Widget>[
+// //                   Expanded(
+// //                     child: Container(
+// //                       decoration: const BoxDecoration(
+// //                         image: DecorationImage(
+// //                           image: NetworkImage(
+// //                               "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"),
+// //                           fit: BoxFit.cover,
+// //                         ),
+// //                       ),
+// //                     ),
+// //                   ),
+// //                   ListTile(
+// //                     title: Text(
+// //                       restaurant.name,
+// //                       textAlign: TextAlign.center,
+// //                       style: const TextStyle(
+// //                         fontWeight: FontWeight.bold,
+// //                       ),
+// //                     ),
+// //                   ),
+// //                 ],
+// //               ),
+// //             );
+// //           },
+// //         );
+// //       },
+// //     );
