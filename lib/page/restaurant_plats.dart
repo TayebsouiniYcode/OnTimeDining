@@ -47,21 +47,25 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
                     ),
                     child: Column(
                       children: [
-                        GestureDetector(
-                          child: Row(
-                            children: [
-                              Text("Dash title: ${dashList[index].title}"),
-                              Text(
-                                  "dash price: \$ ${dashList[index].price.toString()}")
-                            ],
+                        Container(
+                          decoration: BoxDecoration(color: Colors.indigoAccent),
+                          padding: EdgeInsets.all(20.00),
+                          child: GestureDetector(
+                            child: Row(
+                              children: [
+                                Text("Dash title: ${dashList[index].title}"),
+                                Text(
+                                    "dash price: \$ ${dashList[index].price.toString()}")
+                              ],
+                            ),
+                            onTap: () {
+                              print("tap dash id : ${dashList[index].id}");
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => DashDetails(
+                                        dash: dashList[index],
+                                      )));
+                            },
                           ),
-                          onTap: () {
-                            print("tap dash id : ${dashList[index].id}");
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DashDetails(
-                                      dash: dashList[index],
-                                    )));
-                          },
                         )
                       ],
                     ),
@@ -77,6 +81,7 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
           }
         },
       ),
+      bottomNavigationBar: ButtomNavigationMenu(),
     );
   }
 }

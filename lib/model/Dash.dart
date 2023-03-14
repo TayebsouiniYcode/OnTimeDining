@@ -32,6 +32,18 @@ class Dash {
     };
   }
 
+  Map toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'image': image,
+      'categoryId': categoryId,
+      'restaurantId': restaurantId,
+    };
+  }
+
   factory Dash.fromMap(Map<String, dynamic>? map) {
     if (map == null) {
       return Dash(
