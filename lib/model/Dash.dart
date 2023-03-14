@@ -8,6 +8,7 @@ class Dash {
   final double price;
   final String image;
   final int categoryId;
+  final int restaurantId;
 
   Dash({
     required this.id,
@@ -16,6 +17,7 @@ class Dash {
     required this.price,
     required this.image,
     required this.categoryId,
+    required this.restaurantId,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class Dash {
       'price': price,
       'image': image,
       'categoryId': categoryId,
+      'restaurantId': restaurantId,
     };
   }
 
@@ -37,7 +40,8 @@ class Dash {
           description: '',
           categoryId: -1,
           price: 00.00,
-          image: '');
+          image: '',
+          restaurantId: -1);
     }
     return Dash(
         id: map['id'] ?? '',
@@ -45,11 +49,12 @@ class Dash {
         description: map['description'] ?? '',
         categoryId: map['categoryId'] ?? '',
         price: map['price'] ?? '',
-        image: map['image'] ?? '');
+        image: map['image'] ?? '',
+        restaurantId: map['restaurantId'] ?? '');
   }
 
   @override
   String toString() {
-    return 'Dash { id : $id, title: $title, description: $description, price: $price, categoryId : $categoryId, image name : $image}';
+    return 'Dash { id : $id, title: $title, description: $description, price: $price, categoryId : $categoryId, image name : $image, restaurantId: $restaurantId}';
   }
 }

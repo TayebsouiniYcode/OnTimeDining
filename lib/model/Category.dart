@@ -14,7 +14,7 @@ class Category {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': title,
+      'title': title,
       'description': description,
       'image': image,
     };

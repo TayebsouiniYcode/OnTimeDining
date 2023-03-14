@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final _databaseName = 'database3.db';
+  static final _databaseName = 'database7.db';
   static final _databaseVersion = 1;
 
   static final tableRestaurant = 'restaurant';
@@ -83,7 +83,7 @@ class DatabaseHelper {
         $columnDashPrice REAL NOT NULL,
         $columnDashRestaurantId INT NOT NULL,
         FOREIGN KEY (restaurantId) REFERENCES restaurant (id),
-        FOREIGN KEY (categoryId) REFERENCES category (id),
+        FOREIGN KEY (categoryId) REFERENCES category (id)
       )
     ''');
   }
