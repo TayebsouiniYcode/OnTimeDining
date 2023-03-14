@@ -14,6 +14,21 @@ class DatabaseHelper {
   static final columnRestaurantPhone = 'phone';
   static final columnRestaurantImage = 'image';
 
+  static final tableCategory = 'category';
+  static final columnCategoryId = 'id';
+  static final columnCategoryTitle = 'title';
+  static final columnCategoryDescription = 'description';
+  static final columnCategoryImage = 'image';
+
+  static final tableDash = 'dash';
+  static final columnDashId = 'id';
+  static final columnDashTitle = 'title';
+  static final columnDashDescription = 'description';
+  static final columnDashPrice = 'price';
+  static final columnDashImage = 'image';
+  static final columnDashCategoryId = 'categoryId';
+  static final columnDashRestaurantId = 'restaurantId';
+
   // make this a singleton class
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -48,6 +63,29 @@ class DatabaseHelper {
         $columnRestaurantImage TEXT NOT NULL
       )
    ''');
+
+    await db.execute('''
+      CREATE TABLE $tableCategory (
+        $columnCategoryId INTEGER PRIMARY KEY,
+        $columnCategoryTitle TEXT NOT NULL,
+        $columnCategoryDescription TEXT NOT NULL,
+        $columnCategoryImage TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE $tableDash (
+        $columnDashId INTEGER PRIMARY KEY,
+        $columnDashTitle TEXT NOT NULL,
+        $columnDashDescription TEXT NOT NULL,
+        $columnDashImage TEXT NOT NULL,
+        $columnDashCategoryId INTEGER,
+        $columnDashPrice REAL NOT NULL,
+        $columnDashRestaurantId INT NOT NULL,
+        FOREIGN KEY (restaurantId) REFERENCES restaurant (id),
+        FOREIGN KEY (categoryId) REFERENCES category (id),
+      )
+    ''');
   }
 
   static Future<int> insert(String table, Map<String, dynamic> row) async {
