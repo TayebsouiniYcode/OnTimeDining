@@ -9,8 +9,34 @@ class CheckPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(0, 127, 43, 43),
+        elevation: 0,
+        leading: GestureDetector(
+          child: const Icon(
+            Icons.arrow_back_sharp,
+            color: Colors.black,
+          ),
+          onTap: () {
+            //TODO previous page
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'Ajouter',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: Colors.black,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+          )
+        ],
         centerTitle: true,
-        title: const Text("Ajouter au panier"),
       ),
       body: Center(
         child: FutureBuilder(
