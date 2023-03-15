@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/page/home_page.dart';
+import 'package:on_time_dining/page/restaurant_plats.dart';
 
 class CheckPage extends StatelessWidget {
   const CheckPage({Key? key}) : super(key: key);
@@ -61,7 +63,10 @@ class CheckPage extends StatelessWidget {
               future: Future.delayed(
                 const Duration(seconds: 1),
                 () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
                 },
               ),
               builder: (context, snapshot) {

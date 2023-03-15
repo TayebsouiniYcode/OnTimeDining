@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/helpers/commandItemHelper.dart';
 import 'package:on_time_dining/helpers/panier.dart';
 import 'package:on_time_dining/model/Dash.dart';
 import 'package:on_time_dining/page/dash_details.dart';
 import 'package:on_time_dining/service/dash_service.dart';
 import 'package:on_time_dining/widget/bottom_navigation.dart';
+import 'package:on_time_dining/widget/left_drawer.dart';
 
 import '../model/Restaurant.dart';
 import 'check.dart';
@@ -18,10 +20,12 @@ class RestaurantPlats extends StatefulWidget {
 
 class _RestaurantPlatsState extends State<RestaurantPlats> {
   DashService dashService = DashService();
+  List<CommandItemHelper> panier = Panier.panier;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: DrawerPanier(),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(0, 127, 43, 43),
         elevation: 0,
@@ -32,7 +36,6 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
           ),
           onTap: () {
             //TODO previous page
-            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -171,8 +174,15 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
                                                               BorderRadius.zero,
                                                           side: BorderSide(color: Colors.green)))),
                                               onPressed: () {
+                                                CommandItemHelper
+                                                    commandItemHelper =
+                                                    CommandItemHelper(
+                                                        dash: dashList[index],
+                                                        quantity: 1,
+                                                        price: dashList[index]
+                                                            .price);
                                                 Panier.panier
-                                                    .add(dashList[index]);
+                                                    .add(commandItemHelper);
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

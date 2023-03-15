@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/helpers/commandItemHelper.dart';
 import 'package:on_time_dining/model/Dash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +36,9 @@ class _DashDetailsState extends State<DashDetails> {
               child: Text("Add to carte"),
               onTap: () async {
                 print(Panier.panier.length);
-                Panier.panier.add(widget.dash);
+                CommandItemHelper commandItemHelper = CommandItemHelper(
+                    dash: widget.dash, quantity: 1, price: widget.dash.price);
+                Panier.panier.add(commandItemHelper);
               },
             ),
           )

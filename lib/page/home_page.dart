@@ -3,7 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:on_time_dining/model/Restaurant.dart';
 import 'package:on_time_dining/page/restaurant_plats.dart';
 import 'package:on_time_dining/service/restaurant_service.dart';
+import 'package:on_time_dining/widget/left_drawer.dart';
 
+import '../helpers/commandItemHelper.dart';
+import '../helpers/panier.dart';
 import '../widget/bottom_navigation.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      endDrawer: DrawerPanier(),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(0, 127, 43, 43),
         elevation: 0,
