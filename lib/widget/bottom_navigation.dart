@@ -4,6 +4,8 @@ import 'package:on_time_dining/page/home_page.dart';
 import 'package:on_time_dining/page/panier.dart';
 import 'package:on_time_dining/page/profil.dart';
 
+import '../service/profil_service.dart';
+
 class ButtomNavigationMenu extends StatefulWidget {
   const ButtomNavigationMenu({super.key});
 
@@ -12,6 +14,8 @@ class ButtomNavigationMenu extends StatefulWidget {
 }
 
 class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
+  ProfilDetailsService profilDetailsService = ProfilDetailsService();
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -50,6 +54,7 @@ class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
     }
 
     if (index == 2) {
+      // profilDetailsService.chargeProfilDetails();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Profil()),

@@ -1,4 +1,5 @@
 import 'package:on_time_dining/dao/commandDao.dart';
+import 'package:on_time_dining/helpers/profil_details.dart';
 
 import '../model/Command.dart';
 
@@ -14,6 +15,10 @@ class CommandService {
     print("...... Command service ");
     print(list);
     return list;
+  }
+
+  Future<List<Command>> getCommandList() async {
+    return await ProfilDetails.getCommandListStatic();
   }
 
   void updateCommand(Command command) {

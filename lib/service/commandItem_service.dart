@@ -12,6 +12,8 @@ class CommandItemService {
   List<CommandItemHelper> panier = Panier.panier;
 
   void insertCommandItem() async {
+    //TODO if ListItem is null
+
     double commandTTC = 0;
     //catculate TTC
     for (int i = 0; i < panier.length; i++) {
@@ -30,8 +32,10 @@ class CommandItemService {
 
       commandItemDao.insertCommandItem(commandItem.toMap());
     }
-
+    print(".......................... Panier clear");
     Panier.panier.clear();
+    panier.clear();
+    print(Panier.panier.toString());
   }
 
   Future<List<Map<String, dynamic>>> getCommandItemByCommand(
@@ -41,7 +45,5 @@ class CommandItemService {
 
   void showCommandItemsInLog() async {
     List<Map<String, dynamic>> list = await commandItemDao.getAllCommandItems();
-    print("................................. show commandItem method");
-    print(list[1].toString());
   }
 }

@@ -1,7 +1,9 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/commandItemHelper.dart';
 import 'package:on_time_dining/helpers/panier.dart';
 import 'package:on_time_dining/service/commandItem_service.dart';
+import 'package:on_time_dining/service/profil_service.dart';
 
 class DrawerPanier extends StatefulWidget {
   List<CommandItemHelper> panier = Panier.panier;
@@ -14,6 +16,7 @@ class DrawerPanier extends StatefulWidget {
 
 class _DrawerPanierState extends State<DrawerPanier> {
   CommandItemService commandItemService = CommandItemService();
+  ProfilDetailsService profilDetailsService = ProfilDetailsService();
   @override
   void initState() {
     super.initState();
@@ -34,19 +37,24 @@ class _DrawerPanierState extends State<DrawerPanier> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    foregroundColor: Colors.black,
-                    elevation: 0,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
+              Padding(padding: EdgeInsets.only(top: 12)),
+              Text(
+                "Carte",
+                style: TextStyle(fontSize: 16.00, fontWeight: FontWeight.bold),
+              ),
+              // ElevatedButton(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.transparent,
+              //       foregroundColor: Colors.black,
+              //       elevation: 0,
+              //     ),
+              //     child: Icon(
+              //       Icons.close,
+              //       color: Colors.white,
+              //     ),
+              //     onPressed: () {
+              //       Navigator.of(context).pop();
+              //     }),
               Padding(padding: EdgeInsets.only(bottom: 30)),
               Container(
                   height: 420,
@@ -89,15 +97,32 @@ class _DrawerPanierState extends State<DrawerPanier> {
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 20.00)),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: Colors.black,
+                            elevation: 0,
+                            side: const BorderSide(
+                              width: 1.0,
+                              color: Colors.green,
+                            )),
                         onPressed: () {
                           commandItemService.insertCommandItem();
+                          profilDetailsService.chargeProfilDetails();
+
+                          Navigator.of(context).pop();
+                          // sendNotification(double prixTotal) {
+                          //   AwesomeNotifications().createNotification(
+                          //       content: NotificationContent(
+                          //           id: 10,
+                          //           channelKey: 'channelKey',
+                          //           title: 'commande est ajouter avec success',
+                          //           body: 'prix Total '));
+                          // }
                         },
-                        child: Icon(Icons.check)),
-                    ElevatedButton(
-                        onPressed: () {
-                          commandItemService.showCommandItemsInLog();
-                        },
-                        child: Icon(Icons.safety_check)),
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        )),
                   ],
                 ),
               )

@@ -15,7 +15,8 @@ class ProfilDetailsService {
     // TODO
     // To refactoring.....................
     List<Map<String, dynamic>> list = await commandService.getAllCommand();
-
+    //TODO HAHAHA 00:26
+    ProfilDetails.commandList.clear();
     //get all command for this profil
     for (int i = 0; i < list.length; i++) {
       ProfilDetails.commandList.add(Command.fromMap(list[i]));

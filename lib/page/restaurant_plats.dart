@@ -36,6 +36,7 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
           ),
           onTap: () {
             //TODO previous page
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -59,53 +60,66 @@ class _RestaurantPlatsState extends State<RestaurantPlats> {
         padding: EdgeInsets.all(20.00),
         child: Column(
           children: [
-            const Padding(padding: EdgeInsets.all(20.00)),
-            Column(
-              children: [
-                RichText(
-                    text: TextSpan(children: [
-                  const TextSpan(
-                      text: "Let's finds the best food around you at ",
-                      style: TextStyle(
-                          fontSize: 25.00,
-                          fontFamily: 'Raleway',
-                          color: Colors.black)),
-                  TextSpan(
-                    text: widget.restaurant.name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                        fontSize: 30.00),
-                  )
-                ])),
-                Padding(padding: EdgeInsets.all(30.00)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_outlined,
-                          color: Colors.green,
-                          size: 16,
-                        ),
-                        Text(
-                          "${widget.restaurant.city}, ${widget.restaurant.country}",
-                          style: const TextStyle(
-                              fontSize: 16.00, color: Colors.green),
-                        )
-                      ],
-                    ),
-                    Text(
-                      widget.restaurant.phone,
-                      style:
-                          const TextStyle(color: Colors.green, fontSize: 16.00),
-                    )
-                  ],
-                )
-              ],
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/${widget.restaurant.image}"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Text(widget.restaurant.name),
             ),
-            const Padding(padding: EdgeInsets.all(20.00)),
+            Padding(padding: EdgeInsets.only(bottom: 10)),
+            Container(
+              child: Column(
+                children: [
+                  RichText(
+                      text: TextSpan(children: [
+                    const TextSpan(
+                        text: "Let's finds the best food around you at ",
+                        style: TextStyle(
+                            fontSize: 25.00,
+                            fontFamily: 'Raleway',
+                            color: Colors.black)),
+                    TextSpan(
+                      text: widget.restaurant.name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                          fontSize: 30.00),
+                    )
+                  ])),
+                  Padding(padding: EdgeInsets.all(10.00)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.green,
+                            size: 16,
+                          ),
+                          Text(
+                            "${widget.restaurant.city}, ${widget.restaurant.country}",
+                            style: const TextStyle(
+                                fontSize: 16.00, color: Colors.green),
+                          )
+                        ],
+                      ),
+                      Text(
+                        widget.restaurant.phone,
+                        style: const TextStyle(
+                            color: Colors.green, fontSize: 16.00),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: dashService.getDashByRestaurant(widget.restaurant.id),

@@ -63,10 +63,11 @@ class CheckPage extends StatelessWidget {
               future: Future.delayed(
                 const Duration(seconds: 1),
                 () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
+                  Navigator.pop(context);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => HomePage()),
+                  // );
                 },
               ),
               builder: (context, snapshot) {

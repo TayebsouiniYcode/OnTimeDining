@@ -1,8 +1,12 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/dao/commandDao.dart';
+import 'package:on_time_dining/dao/commandItemDao.dart';
 import 'package:on_time_dining/helpers/sql_helper.dart';
 import 'package:on_time_dining/page/home_page.dart';
 import 'package:on_time_dining/service/category_service.dart';
 import 'package:on_time_dining/service/dash_service.dart';
+import 'package:on_time_dining/service/profil_service.dart';
 import 'package:on_time_dining/service/restaurant_service.dart';
 
 void main() async {
@@ -11,12 +15,27 @@ void main() async {
   CategoryService categoryService = CategoryService();
   DashService dashService = DashService();
 
+  // CommandDao commandDao = CommandDao();
+  // commandDao.deleteCommand(24);
+
   // restaurantService.insertRestaurant();
   // categoryService.insertCategory();
   // dashService.insertDash();
 
   // dashService.getAllDash();
   // dashService.getDashByRestaurant(1);
+
+  // AwesomeNotifications().initialize(
+  //     null,
+  //     [
+  //       NotificationChannel(
+  //           channelKey: 'channelKey',
+  //           channelName: 'channelName',
+  //           channelDescription: 'channelDescription'
+  //       )
+  //     ],
+  //     debug: true
+  // );
   runApp(const MyApp());
 }
 

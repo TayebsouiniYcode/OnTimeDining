@@ -7,10 +7,12 @@ import 'package:on_time_dining/widget/bottom_navigation.dart';
 import 'package:on_time_dining/widget/left_drawer.dart';
 
 class Profil extends StatefulWidget {
-  const Profil({super.key});
+  Profil({super.key});
 
   @override
-  State<Profil> createState() => _ProfilState();
+  State<Profil> createState() {
+    return _ProfilState();
+  }
 }
 
 class _ProfilState extends State<Profil> {
@@ -68,14 +70,15 @@ class _ProfilState extends State<Profil> {
           ),
           Container(
             height: 400,
-            child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: commandService.getAllCommand(),
+            child: FutureBuilder<List<Command>>(
+              future: commandService.getCommandList(),
               builder: (BuildContext context,
-                  AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                  AsyncSnapshot<List<Command>> snapshot) {
                 if (snapshot.hasData) {
-                  List<Map<String, dynamic>> commandMaps = snapshot.data!;
-                  List<Command> commandList =
-                      commandMaps.map((map) => Command.fromMap(map)).toList();
+                  List<Command> commandList = snapshot.data!;
+                  // List<Map<String, dynamic>> commandMaps = snapshot.data!;
+                  // List<Command> commandList =
+                  //     commandMaps.map((map) => Command.fromMap(map)).toList();
                   return ListView.builder(
                       itemCount: commandList.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -97,7 +100,7 @@ class _ProfilState extends State<Profil> {
                                 children: [
                                   Image(
                                     image: AssetImage(
-                                        'images/${ProfilDetails.commandList[0].commandItemList[0].dish!.image}'),
+                                        'images/${ProfilDetails.commandList[index].commandItemList[0].dish!.image}'),
                                     width: 170,
                                   ),
                                   Column(
@@ -130,11 +133,11 @@ class _ProfilState extends State<Profil> {
               },
             ),
           ),
-          ElevatedButton(
-              onPressed: () {
-                profilDetailsService.chargeProfilDetails();
-              },
-              child: Text("Click me to charge profileDetails list"))
+          // ElevatedButton(
+          //     onPressed: () {
+          //       profilDetailsService.chargeProfilDetails();
+          //     },
+          //     child: Text("Click me to charge profileDetails list"))
         ],
       ),
       bottomNavigationBar: ButtomNavigationMenu(),
