@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:on_time_dining/helpers/profil_details.dart';
 import 'package:on_time_dining/model/Command.dart';
 import 'package:on_time_dining/service/command_service.dart';
 import 'package:on_time_dining/service/profil_service.dart';
@@ -25,10 +26,45 @@ class _ProfilState extends State<Profil> {
           Container(
             height: 300,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.black,
+            decoration: const BoxDecoration(
+              color: Colors.green,
             ),
-            child: Text("this is commands"),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Hello Client",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.00,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                const Text(
+                  "You have ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.00,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Text(
+                  "${ProfilDetails.commandList.length} Commandes",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.00,
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 10)),
+                Text(
+                  "Total : \$ ${ProfilDetails.totalSalesInThisApplication()}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.00,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
           ),
           Container(
             height: 400,
@@ -44,11 +80,46 @@ class _ProfilState extends State<Profil> {
                       itemCount: commandList.length,
                       itemBuilder: (BuildContext context, int index) {
                         //TODO this is a card of Dash to refactoring
-                        return Row(
-                          children: [
-                            Text(commandList[index].id.toString()),
-                            Text(commandList[index].ttc.toString()),
-                          ],
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(
+                                      width: 2, // the thickness
+                                      color: Colors
+                                          .black // the color of the border
+                                      )),
+                              onPressed: () {
+                                print("TTT");
+                              },
+                              child: Row(
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                        'images/${ProfilDetails.commandList[0].commandItemList[0].dish!.image}'),
+                                    width: 170,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Date : (comming soon)",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      Padding(
+                                          padding: EdgeInsets.only(bottom: 30)),
+                                      Text(
+                                        '\$ ${commandList[index].ttc.toString()}',
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )),
                         );
                       });
                 } else if (snapshot.hasError) {
@@ -69,4 +140,12 @@ class _ProfilState extends State<Profil> {
       bottomNavigationBar: ButtomNavigationMenu(),
     );
   }
+
+  // String getCommandTTC(Command command) {
+  //   double ttc = 0;
+  //   for(int i = 0; i < command.commandItemList.length; i++) {
+  //     ttc += command.
+  //   }
+  //   return 'test';
+  // }
 }
