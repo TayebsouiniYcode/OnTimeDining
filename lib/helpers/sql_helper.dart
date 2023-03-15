@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  static final _databaseName = 'database7.db';
+  static final _databaseName = 'database9.db';
   static final _databaseVersion = 1;
 
   static final tableRestaurant = 'restaurant';
@@ -28,6 +28,19 @@ class DatabaseHelper {
   static final columnDashImage = 'image';
   static final columnDashCategoryId = 'categoryId';
   static final columnDashRestaurantId = 'restaurantId';
+
+  static final tableCommand = 'command';
+  static final columnCommandId = 'id';
+  static final columnCommandStatus = 'status';
+  static final columnCommandCreatedAt = 'createdAt';
+  static final columnCommandTTC = 'ttc';
+
+  static final tableCommandItem = 'commandItem';
+  static final columnCommandItemId = 'id';
+  static final columnCommandItemQuantity = 'quantity';
+  static final columnCommandItemTTC = 'ttc';
+  static final columnCommandItemCommandId = 'command_id';
+  static final columnCommandItemDishId = 'dish_id';
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -86,6 +99,26 @@ class DatabaseHelper {
         FOREIGN KEY (categoryId) REFERENCES category (id)
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE $tableCommand (
+        $columnCommandId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnCommandTTC REAL,
+        $columnCommandStatus BOOLEAN
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE $tableCommandItem (
+        $columnCommandItemId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnCommandItemTTC REAL,
+        $columnCommandItemQuantity INTEGER,
+        $columnCommandItemCommandId INTEGER,
+        $columnCommandItemDishId INTEGER,
+        FOREIGN KEY (command_id) REFERENCES command (id),
+        FOREIGN KEY (dish_id) REFERENCES dash (id)
+      )
+    ''');
   }
 
   static Future<int> insert(String table, Map<String, dynamic> row) async {
@@ -115,4 +148,9 @@ class DatabaseHelper {
     final db = await instance.database;
     return await db.query(table, where: whereClause, whereArgs: whereArgs);
   }
+
+  // static Future<List<Map<String, dynamic?>>> getLastRow(String table) async {
+  //   final db = await instance.database;
+  //   return await db.query("SELECT MAX(*) FROM $table");
+  // }
 }

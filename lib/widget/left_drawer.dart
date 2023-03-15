@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/commandItemHelper.dart';
 import 'package:on_time_dining/helpers/panier.dart';
+import 'package:on_time_dining/service/commandItem_service.dart';
 
 class DrawerPanier extends StatefulWidget {
   List<CommandItemHelper> panier = Panier.panier;
@@ -12,6 +13,7 @@ class DrawerPanier extends StatefulWidget {
 }
 
 class _DrawerPanierState extends State<DrawerPanier> {
+  CommandItemService commandItemService = CommandItemService();
   @override
   void initState() {
     super.initState();
@@ -45,7 +47,7 @@ class _DrawerPanierState extends State<DrawerPanier> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
-              Padding(padding: EdgeInsets.only(bottom: 40)),
+              Padding(padding: EdgeInsets.only(bottom: 30)),
               Container(
                   height: 420,
                   width: 80,
@@ -67,7 +69,7 @@ class _DrawerPanierState extends State<DrawerPanier> {
                           ),
                         );
                       })),
-              Padding(padding: EdgeInsets.only(bottom: 60)),
+              Padding(padding: EdgeInsets.only(bottom: 50)),
               Container(
                 child: Column(
                   children: [
@@ -85,12 +87,17 @@ class _DrawerPanierState extends State<DrawerPanier> {
                       "\$ ${widget.price}",
                       style: TextStyle(color: Colors.black),
                     ),
-                    const Padding(padding: EdgeInsets.only(bottom: 30.00)),
+                    const Padding(padding: EdgeInsets.only(bottom: 20.00)),
                     ElevatedButton(
                         onPressed: () {
-                          print("checked");
+                          commandItemService.insertCommandItem();
                         },
-                        child: Icon(Icons.check))
+                        child: Icon(Icons.check)),
+                    ElevatedButton(
+                        onPressed: () {
+                          commandItemService.showCommandItemsInLog();
+                        },
+                        child: Icon(Icons.safety_check)),
                   ],
                 ),
               )

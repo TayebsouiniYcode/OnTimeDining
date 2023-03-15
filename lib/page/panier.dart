@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/commandItemHelper.dart';
 import 'package:on_time_dining/helpers/panier.dart';
+import 'package:on_time_dining/service/commandItem_service.dart';
 import 'package:on_time_dining/widget/bottom_navigation.dart';
 import 'package:on_time_dining/widget/left_drawer.dart';
 
@@ -14,7 +15,7 @@ class MyPanier extends StatefulWidget {
 }
 
 class _MyPanierState extends State<MyPanier> {
-  List<CommandItemHelper> panier = Panier.panier;
+  CommandItemService commandItemService = CommandItemService();
 
   @override
   Widget build(BuildContext context) {
@@ -50,22 +51,10 @@ class _MyPanierState extends State<MyPanier> {
         ],
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: panier.length,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              SizedBox(
-                // width: MediaQuery.of(context).size.width,
-                width: 100,
-                height: 100,
-                child: Image(
-                  image: AssetImage('images/${panier[index].dash.image}'),
-                  width: double.infinity,
-                ),
-              )
-            ],
-          );
+      body: ElevatedButton(
+        child: Text("Checkout"),
+        onPressed: () {
+          commandItemService.insertCommandItem();
         },
       ),
       bottomNavigationBar: ButtomNavigationMenu(),
