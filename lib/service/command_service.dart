@@ -5,7 +5,7 @@ import '../model/Command.dart';
 class CommandService {
   CommandDao commandDao = CommandDao();
 
-  Future<int> insertCommand(Command command) async{
+  Future<int> insertCommand(Command command) async {
     return await commandDao.insertCommand(command.toMap());
   }
 
@@ -16,5 +16,7 @@ class CommandService {
     return list;
   }
 
-
+  void updateCommand(Command command) {
+    commandDao.updateCommand(command.toMap());
+  }
 }

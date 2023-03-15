@@ -24,4 +24,8 @@ class DashDao {
   Future<int> deleteRestaurant(int dashId) async {
     return await DatabaseHelper.delete('dash', 'id = ?', [dashId]);
   }
+
+  Future<List<Map<String, dynamic>>> getDashById(int dish_id) async {
+    return await DatabaseHelper.query('dash', 'id = ?', [dish_id]);
+  }
 }

@@ -19,4 +19,10 @@ class CommandItemDao {
     return await DatabaseHelper.delete(
         'commandItem', 'id = ?', [commandItemId]);
   }
+
+  Future<List<Map<String, dynamic>>> getCommandItemsByCommand(
+      int command_id) async {
+    return await DatabaseHelper.query(
+        'commandItem', 'command_id = ?', [command_id]);
+  }
 }

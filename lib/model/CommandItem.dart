@@ -8,6 +8,8 @@ class CommandItem {
   final int command_id;
   final double ttc;
 
+  Dash? dish;
+
   CommandItem(
       {required this.quantity,
       required this.dish_id,
@@ -47,5 +49,5 @@ class CommandItem {
 
   @override
   String toString() =>
-      'CommandItem {id: $id, dish_id: $dish_id, command_id: $command_id, quantity : $quantity, ttc: $ttc }';
+      'CommandItem {id: $id, dish_id: $dish_id, command_id: $command_id, quantity : $quantity, ttc: $ttc, dish : $dish }';
 }

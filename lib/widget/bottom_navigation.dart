@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:on_time_dining/helpers/panier.dart';
+import 'package:on_time_dining/page/home_page.dart';
 import 'package:on_time_dining/page/panier.dart';
+import 'package:on_time_dining/page/profil.dart';
 
 class ButtomNavigationMenu extends StatefulWidget {
   const ButtomNavigationMenu({super.key});
@@ -32,10 +34,25 @@ class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 2) {
+
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }
+
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyPanier()),
+      );
+    }
+
+    if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Profil()),
       );
     }
   }
@@ -50,11 +67,11 @@ class _ButtomNavigationMenu extends State<ButtomNavigationMenu> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.local_grocery_store_outlined),
-          label: 'Business',
+          label: 'Panier',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.food_bank),
-          label: 'Panier',
+          icon: Icon(Icons.confirmation_num_outlined),
+          label: 'Profil',
         ),
       ],
       currentIndex: _selectedIndex,

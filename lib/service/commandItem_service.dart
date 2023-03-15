@@ -12,7 +12,12 @@ class CommandItemService {
   List<CommandItemHelper> panier = Panier.panier;
 
   void insertCommandItem() async {
-    Command command = Command(ttc: 0.0, status: false);
+    double commandTTC = 0;
+    //catculate TTC
+    for (int i = 0; i < panier.length; i++) {
+      commandTTC += panier[i].price * panier[i].quantity;
+    }
+    Command command = Command(ttc: commandTTC, status: false);
 
     int command_id = await commandService.insertCommand(command);
 
@@ -29,9 +34,14 @@ class CommandItemService {
     Panier.panier.clear();
   }
 
+  Future<List<Map<String, dynamic>>> getCommandItemByCommand(
+      int command_id) async {
+    return await commandItemDao.getCommandItemsByCommand(command_id);
+  }
+
   void showCommandItemsInLog() async {
     List<Map<String, dynamic>> list = await commandItemDao.getAllCommandItems();
     print("................................. show commandItem method");
-    print(list[0].toString());
+    print(list[1].toString());
   }
 }

@@ -78,4 +78,8 @@ class DashService {
     print(list);
     return list;
   }
+
+  Future<List<Map<String, dynamic>>> getDishByCommandItemDishId(int dish_id) async {
+    return await dashDao.getDashById(dish_id);
+  }
 }

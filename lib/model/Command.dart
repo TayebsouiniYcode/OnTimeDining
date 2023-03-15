@@ -5,6 +5,8 @@ class Command {
   final double ttc;
   final bool status;
 
+  List<CommandItem> commandItemList = [];
+
   Command({required this.ttc, required this.status});
 
   Map<String, dynamic> toMap() {
@@ -18,8 +20,7 @@ class Command {
       return command;
     }
 
-    Command command =
-        Command(ttc: map['ttc'] ?? 0, status: map['status'] ?? false);
+    Command command = Command(ttc: map['ttc'] ?? 0, status: false);
     command.id = map['id'] ?? -1;
 
     return command;
@@ -27,6 +28,6 @@ class Command {
 
   @override
   String toString() {
-    return 'Command { id: $id, status: $status, ttc: $ttc}';
+    return 'Command { id: $id, status: $status, ttc: $ttc, Command items: { $commandItemList }}';
   }
 }
