@@ -110,14 +110,14 @@ class _DrawerPanierState extends State<DrawerPanier> {
                           profilDetailsService.chargeProfilDetails();
 
                           Navigator.of(context).pop();
-                          // sendNotification(double prixTotal) {
-                          //   AwesomeNotifications().createNotification(
-                          //       content: NotificationContent(
-                          //           id: 10,
-                          //           channelKey: 'channelKey',
-                          //           title: 'commande est ajouter avec success',
-                          //           body: 'prix Total '));
-                          // }
+                          sendNotification(double prixTotal) {
+                            AwesomeNotifications().createNotification(
+                                content: NotificationContent(
+                                    id: 10,
+                                    channelKey: 'channelKey',
+                                    title: 'commande est ajouter avec success',
+                                    body: 'prix Total '));
+                          }
                         },
                         child: Icon(
                           Icons.check,

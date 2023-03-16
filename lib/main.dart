@@ -25,17 +25,25 @@ void main() async {
   // dashService.getAllDash();
   // dashService.getDashByRestaurant(1);
 
-  // AwesomeNotifications().initialize(
-  //     null,
-  //     [
-  //       NotificationChannel(
-  //           channelKey: 'channelKey',
-  //           channelName: 'channelName',
-  //           channelDescription: 'channelDescription'
-  //       )
-  //     ],
-  //     debug: true
-  // );
+  AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+            channelKey: 'channelKey',
+            channelName: 'channelName',
+            channelDescription: 'channelDescription'
+        )
+      ],
+      debug: true
+  );
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed){
+      if(!isAllowed){
+        AwesomeNotifications().requestPermissionToSendNotifications(
+
+        );
+      }
+    });
   runApp(const MyApp());
 }
 
